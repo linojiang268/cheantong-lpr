@@ -1,6 +1,6 @@
 {
   "name": "ouarea/cheantong-lpr",
-  "version": "1.0.1",
+  "version": "v1.0.2",
   "description": "Lpr notify service implementation with cheantong as backend",
   "license": "proprietary",
   "type": "library",
