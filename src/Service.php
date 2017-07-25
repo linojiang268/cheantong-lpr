@@ -57,16 +57,18 @@ class Service
     /**
      * Query cars in dealer
      *
-     * @param $startTime  format: Y-m-d H:i:s
-     * @param $endTime    format: Y-m-d H:i:s
-     * @return array      array of cars, keys taken:
-     *                     - numno      (川A00000)
-     *                     - carno      (川A00000)
-     *                     - entertime  (2017-09-01 00:00:00)
-     *                     - parkposi   (A)
+     * @param string $startTime  format: Y-m-d H:i:s
+     * @param string $endTime    format: Y-m-d H:i:s
+     * @param array  $options    array keys taken:
+     *                            - timeout                 
+     * @return array  array of cars, keys taken:
+     *                 - numno      (川A00000)
+     *                 - carno      (川A00000)
+     *                 - entertime  (2017-09-01 00:00:00)
+     *                 - parkposi   (A)
      * @throws \Exception
      */
-    public function queryCarsInDealer($startTime, $endTime)
+    public function queryCarsInDealer($startTime, $endTime, array $options = [])
     {
         $timestamp = $this->getTimestamp();
         $nonce     = $this->getNonce();
@@ -78,14 +80,18 @@ class Service
         $sign      = $this->getSignature($this->from, $timestamp, $nonce, $data);
 
         $response = $this->client->request('POST', $this->server . '/api.aspx/park.in.info',
-                                           [RequestOptions::FORM_PARAMS => [
-                                               'from'      => $this->from,
-                                               'timestamp' => $timestamp,
-                                               'nonce'     => $nonce,
-                                               'branchno'  => $this->branchNo,
-                                               'data'      => $data,
-                                               'sign'      => $sign,
-                                           ]]);
+                                           [
+                                               RequestOptions::FORM_PARAMS => [
+                                                   'from'      => $this->from,
+                                                   'timestamp' => $timestamp,
+                                                   'nonce'     => $nonce,
+                                                   'branchno'  => $this->branchNo,
+                                                   'data'      => $data,
+                                                   'sign'      => $sign,
+                                               ],
+                                               RequestOptions::CONNECT_TIMEOUT => array_get($options, 'timeout', 0),
+                                               RequestOptions::TIMEOUT         => array_get($options, 'timeout', 0),
+                                           ]);
 
         return $this->parseResponse($response);
     }

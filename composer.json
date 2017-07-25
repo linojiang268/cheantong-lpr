@@ -1,11 +1,14 @@
 {
   "name": "ouarea/cheantong-lpr",
-  "version": "v1.0.2",
+  "version": "v1.0.3",
   "description": "Lpr notify service implementation with cheantong as backend",
   "license": "proprietary",
   "type": "library",
 
   "autoload": {
+    "files": [
+      "src/Support/helpers.php"
+    ],
     "psr-4": {
       "Ouarea\\Lpr\\Cheantong\\": "src/"
     }
